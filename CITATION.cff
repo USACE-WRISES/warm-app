@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use WARM in your work, please cite the ERDC technical note that documents it, as below."
+title: "WARM: Web App for Riparian Models"
+type: software
+version: 2.0.0
+date-released: 2026-11-05
+license: GPL-3.0-only
+repository-code: "https://github.com/USACE-WRISES/warm-app"
+url: "https://usace-wrises.github.io/warm-app/"
+abstract: "A web application that compares 14 riparian models against a project's criteria and runs nine of them, the habitat suitability index models certified or reviewed for US Army Corps of Engineers use, in calculators that check every input, for one site or many."
+authors:
+  - family-names: Wiest
+    given-names: Samantha R.
+    affiliation: "Environmental Laboratory, U.S. Army Engineer Research and Development Center"
+  - family-names: Shaw
+    given-names: Colton
+  - family-names: McKay
+    given-names: S. Kyle
+  - family-names: Menichino
+    given-names: Garrett T.
+    orcid: "https://orcid.org/0009-0005-6719-6356"
+    affiliation: "Environmental Laboratory, U.S. Army Engineer Research and Development Center"
+preferred-citation:
+  type: report
+  title: "A Web Application for Riparian Models (WARM)"
+  authors:
+    - family-names: Wiest
+      given-names: Samantha R.
+    - family-names: Shaw
+      given-names: Colton
+    - family-names: McKay
+      given-names: S. Kyle
+  year: 2026
+  institution:
+    name: "US Army Engineer Research and Development Center"
+  number: "ERDC/TN EMRRP-RQ-7"
+  doi: "10.21079/11681/50449"
+keywords:
+  - riparian
+  - habitat suitability index
+  - ecosystem restoration
+  - ecological models
+  - model comparison

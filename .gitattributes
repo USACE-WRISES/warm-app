@@ -1,0 +1,9 @@
+# Every text file stays LF on checkout, whatever core.autocrlf says. The tests compare the fixtures
+# by sha256 (web/tests/fixtures/FROZEN.sha256), so a clone on any machine passes the same tests.
+* text=auto eol=lf
+# files kept byte for byte: never converted
+*.pdf binary
+*.png binary
+*.ico binary
+*.woff2 binary
+*.xlsx binary

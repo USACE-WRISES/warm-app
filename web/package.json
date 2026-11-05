@@ -1,0 +1,26 @@
+{
+  "name": "warm-web",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "WARM, the Web App for Riparian Models: a riparian model finder and nine model calculators, as a static web app on GitHub Pages.",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 5201 --strictPort",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "freeze": "node tools/freeze.mjs"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.2",
+    "happy-dom": "21.0.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  }
+}

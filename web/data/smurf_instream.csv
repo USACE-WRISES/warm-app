@@ -1,0 +1,6 @@
+hydatt,hydatt.SI,stripwidth.ft,stripwidth.SI,flowpath.score,flowpath.SI,shading.ratio,shading.SI,cancov.score,cancov.SI,canstr.score,canstr.SI,carbret.score,carbret.SI
+0,1,0,0,0,0,0,0,0,0,0,0,0,0
+1.5,1,30,0.5,20,1,1,1,20,1,6,1,20,1
+3,0,100,0.9,NA,NA,10,1,NA,NA,NA,NA,NA,NA
+5,0,300,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,1000,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA

@@ -1,0 +1,5 @@
+buffer.dev.Score,buffer.dev.SI,edge.density.perft,edge.density.SI,corridorwidth.ft,corridor.SI,corridormin.ft,corridormin.SI
+0,0,0,1,0,0,0,0
+20,1,0.026,1,100,0.9,100,1
+NA,NA,0.046,0,300,1,1000,1
+NA,NA,0.2,0,1000,1,NA,NA
