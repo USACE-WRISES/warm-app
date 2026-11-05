@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use WARM in your work, please cite the ERDC technical note that documents it, as below."
 title: "WARM: Web App for Riparian Models"
 type: software
-version: 2.0.0
+version: 1.0.0
 date-released: 2026-11-05
 license: GPL-3.0-only
 repository-code: "https://github.com/USACE-WRISES/warm-app"

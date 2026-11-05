@@ -3,14 +3,14 @@
 // APP_VERSION moves together with the newest section of CHANGELOG.md, CITATION.cff and
 // web/package.json (CONTRIBUTING.md rule 4; tests/repo_rules.test.ts pins them all).
 
-export const APP_VERSION = '2.0.0'
+export const APP_VERSION = '1.0.0'
 export const APP_VERSION_LABEL = `v${APP_VERSION}`
 
 export const APP_NAME = 'WARM'
 /** The header's subtitle and the page title's second half. */
 export const APP_TITLE = 'Web App for Riparian Models'
-/** What the app does, on the home page. */
-export const APP_TAGLINE = 'Find a riparian model for your project, then run its calculator.'
+/** What the app does, in one sentence: the home page's lead and the README's opening line. */
+export const APP_TAGLINE = 'Compare riparian models and calculate habitat scores for your sites.'
 
 /** The previous release, the R Shiny app this one replaces. */
 export const PREVIOUS = { version: '1.2.2', url: 'https://wrises.shinyapps.io/warm/' }

@@ -9,10 +9,10 @@ const pct = (id: string, code: string, label: string, curve: ReturnType<typeof l
   ({ id, code, label, unit: '%', min: 0, max: 100, curve, source, help })
 
 export const UMRS_VARIABLES: readonly Variable[] = [
-  // fix: WARM 1.x scored 0.8 + 0.8x at 90 percent and above
+  // fix: the Shiny app scored 0.8 + 0.8x at 90 percent and above
   pct('canopy', 'V1', 'Canopy cover', linear([0, 0], [20, 0.1], [40, 0.4], [70, 1], [80, 1], [90, 0.8], [100, 0.8]), 'Figure 3, p. 7',
     'Average over all the plots in the management area; unforested inclusions count as 0%, open water and marsh are left out.'),
-  // fix: WARM 1.x used a slope of 0.15 between 40 and 60 percent
+  // fix: the Shiny app used a slope of 0.15 between 40 and 60 percent
   pct('forest', 'V2', 'Desired forest type', linear([0, 0], [20, 0.1], [40, 0.3], [60, 0.6], [75, 0.8], [100, 1]), 'Figure 4, p. 8'),
   pct('invasive', 'V3', 'Invasive species cover', linear([0, 1], [10, 0.9], [20, 0.3], [40, 0.1], [50, 0.05], [75, 0.01], [100, 0]), 'Figure 5, p. 9',
     'Ground cover of invasive species that keep the forest from regenerating.'),

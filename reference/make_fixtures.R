@@ -1,6 +1,6 @@
-# Writes the golden fixtures in web/tests/fixtures from WARM 1.x's calculations (reference/legacy.R)
+# Writes the golden fixtures in web/tests/fixtures from the Shiny app's calculations (reference/legacy.R)
 # and the ecorest package (SMURF, and R's own round()). The TypeScript engine is compared with them in
-# web/tests: value for value wherever WARM 2.0 keeps WARM 1.x's arithmetic, and skipping exactly the
+# web/tests: value for value wherever WARM keeps the Shiny app's arithmetic, and skipping exactly the
 # inputs a documented fix changes (docs/changes-from-1x.md).
 #
 # Run from the repository root with R 4.x and the jsonlite and ecorest packages:
@@ -36,7 +36,7 @@ xs <- c((2 * (0:15) + 1) / 16, (2 * (0:31) + 1) / 64, runif(300), runif(100, 0, 
         0.5, 1.5, 2.5, 0.0005, 0.0015, 0.0025, 0.1235, 0.1245, 0.525, 1.0005, 2.675, 0.285, 1.005, 0)
 put(lapply(xs, function(x) list(x = x, d0 = round(x), d2 = round(x, 2), d3 = round(x, 3))), 'round.json')
 
-# --- SMURF (the WARM 1.x single-site calculation, app.R 1813-1900, with ecorest) ---------------------
+# --- SMURF (the Shiny app's single-site calculation, app.R 1813-1900, with ecorest) ---------------------
 curve <- function(file) {
   df <- read.csv(file.path('web/data', file), header = TRUE)
   data.frame(lapply(df, as.numeric))
@@ -74,7 +74,7 @@ BOSQUE <- c('DEPTHGW', 'WETTEDAREA', 'FLOODFREQ', 'DURATION', 'CANTREE', 'CANSHR
 bosque <- lapply(1:360, function(k) {
   cover <- ((k - 1) %% 6) + 1
   b <- c(cover, sapply(1:24, function(i) if (runif(1) < 0.1) pick(c(0, 1)) else r01()))
-  b[22] <- b[12]  # WARM 2.0 asks for SPPCOUNT once
+  b[22] <- b[12]  # WARM asks for SPPCOUNT once
   inputs <- as.list(setNames(b[2:25], BOSQUE))
   inputs$SPPCOUNT_MARSH <- NULL
   list(cover = cover, inputs = inputs, out = legacy_bosque(b))
@@ -149,7 +149,7 @@ uppermiss <- lapply(1:300, function(k) {
 })
 put(uppermiss, 'uppermiss.json')
 
-# --- Lower Willamette (the five species WARM 1.x computed) ------------------------------------------
+# --- Lower Willamette (the five species the Shiny app computed) ------------------------------------------
 lowerwill_case <- function(species) {
   v <- switch(species,
     'Western Pond Turtle' = c(val(0, 100, c(0, 20, 50, 75, 100)), val(0, 100, c(0, 25, 50, 75, 100)),

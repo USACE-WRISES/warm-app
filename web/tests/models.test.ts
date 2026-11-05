@@ -1,5 +1,5 @@
-// The nine calculators' engines against WARM 1.x (the golden fixtures from reference/legacy.R), value
-// for value wherever WARM 2.0 keeps WARM 1.x's arithmetic; each documented fix pinned to its source
+// The nine calculators' engines against the Shiny app (the golden fixtures from reference/legacy.R), value
+// for value wherever WARM keeps the Shiny app's arithmetic; each documented fix pinned to its source
 // value (docs/changes-from-1x.md); and the worked examples of the ERDC technical note (Table 2) and
 // the source reports.
 import { describe, expect, it } from 'vitest'
@@ -20,7 +20,7 @@ const nn = (x: number | null | undefined): number | null => (x === undefined ? n
 
 describe('Bosque Rio Grande', () => {
   const cases = fixture<{ cover: number; inputs: Rec; out: { hydro: number; biota: number; spatial: number; hsi: number } }[]>('bosque.json')
-  it('equals WARM 1.x on every case (both cover-type equations)', () => {
+  it('equals the Shiny app on every case (both cover-type equations)', () => {
     const bad = cases.filter((c) => {
       const r = bosque(c.cover as BosqueCover, c.inputs)
       return !close(r.hydro, c.out.hydro) || !close(r.biota, c.out.biota) || !close(r.spatial, c.out.spatial) || !close(r.hsi, c.out.hsi)
@@ -40,7 +40,7 @@ describe('Bosque Rio Grande', () => {
 
 describe('Cottonwood Missouri', () => {
   const cases = fixture<{ age: number; inputs: Rec; out: { hydro: number | null; biota: number | null; spatial: number | null; eri: number } }[]>('cottonwood.json')
-  it('equals WARM 1.x on every case (mature, young and under 2 years)', () => {
+  it('equals the Shiny app on every case (mature, young and under 2 years)', () => {
     const bad = cases.filter((c) => {
       const r = cottonwood(c.age, c.inputs)
       return !close(r.eri, c.out.eri) || !close(r.hydro, nn(c.out.hydro)) || !close(r.biota, nn(c.out.biota)) || !close(r.spatial, nn(c.out.spatial))
@@ -58,7 +58,7 @@ describe('Cottonwood Missouri', () => {
 
 describe('Chatfield', () => {
   const cases = fixture<{ sv: number[]; out: { v: number[]; fcs: number[]; overall: number } }[]>('chatfield.json')
-  it('equals WARM 1.x on every case', () => {
+  it('equals the Shiny app on every case', () => {
     const bad = cases.filter((c) => {
       const r = chatfield(c.sv)
       const fcs = [r.hydraulic, r.geomorphic, r.physicochemical, r.biotic]
@@ -76,7 +76,7 @@ describe('Chatfield', () => {
 
 describe('Modified Mink (riverine)', () => {
   const cases = fixture<{ siv1: number; siv5: number; siv6: number; vstream: number; out: { si1: number; si5: number; si6: number; cover: number; water: number; hsi: number } }[]>('mink_modified.json')
-  it('equals WARM 1.x on every case but SIV6 between 5 and 5.1 percent', () => {
+  it('equals the Shiny app on every case but SIV6 between 5 and 5.1 percent', () => {
     const bad = cases.filter((c) => !(c.siv6 >= 5 && c.siv6 < 5.1)).filter((c) => {
       const r = minkModified({ SIV1: c.siv1, SIV5: c.siv5, SIV6: c.siv6, Vstream: c.vstream })
       return !close(r.si.SIV1, c.out.si1) || !close(r.si.SIV5, c.out.si5) || !close(r.si.SIV6, c.out.si6)
@@ -100,7 +100,7 @@ describe('Modified Mink (riverine)', () => {
 describe('Mink, Allen (1986)', () => {
   const cases = fixture<{ area: number; v: number[]; out: Record<string, number> }[]>('mink_allen.json')
   const vars = (v: number[]) => ({ V1: v[0], V2: v[1], V3: v[2], V4: v[3], V5: v[4], V6: v[5] })
-  it('variable indices and the unchanged cover equations equal WARM 1.x', () => {
+  it('variable indices and the unchanged cover equations equal the Shiny app', () => {
     const bad = cases.filter((c) => {
       const riv = minkAllen('riverine', c.area, vars(c.v))
       const emerg = minkAllen('emergent', c.area, vars(c.v))
@@ -112,14 +112,14 @@ describe('Mink, Allen (1986)', () => {
     })
     expect(bad).toEqual([])
   })
-  it('fix: the HSI is the lower of water and cover (WARM 1.x always gave 0)', () => {
+  it('fix: the HSI is the lower of water and cover (the Shiny app always gave 0)', () => {
     expect(cases.every((c) => c.out.hsi === 0)).toBe(true)
     const r = minkAllen('riverine', null, { V1: 100, V5: 100, V6: 64 })
     expect(r.hsi).toBeCloseTo(0.8, 12)
   })
   it('fix: large forested wetlands use min(1, SIV2 + SIV3 + SIV4)', () => {
     const r = minkAllen('forested', 500, { V1: 100, V2: 0, V3: 0, V4: 25 })
-    // SIV2 = SIV3 = 0.1 and SIV4 = 0.5: WARM 1.x took the smallest (0.1)
+    // SIV2 = SIV3 = 0.1 and SIV4 = 0.5: the Shiny app took the smallest (0.1)
     expect(r.cover).toBeCloseTo(0.7, 12)
     expect(minkAllen('forested', 500, { V1: 100, V2: 80, V3: 80, V4: 60 }).cover).toBe(1)
   })
@@ -129,7 +129,7 @@ const REGIME: Record<string, number> = { 'Permanent/Connected': 1, 'Semipermanen
 
 describe('Resaca', () => {
   const cases = fixture<{ habitat: ResacaHabitat; slope: number; bank: number; ssi: number; rich: number; ripcan: number; aqcan: number; invasives: number; regime: string; depth: number; out: Record<string, number> }[]>('resaca.json')
-  it('equals WARM 1.x on every case', () => {
+  it('equals the Shiny app on every case', () => {
     const bad = cases.filter((c) => {
       const r = resaca({ habitat: c.habitat, slope: c.slope, bank: c.bank, ssiSum: c.ssi, present: c.rich, ripcan: c.ripcan,
         aqcan: c.aqcan, invasives: c.invasives, regime: REGIME[c.regime], depth: c.depth })
@@ -153,7 +153,7 @@ const FACTOR: Record<string, SkokomishFactor> = {
 
 describe('Skokomish', () => {
   const cases = fixture<{ factor: string; acres: number; pools: number; wood: number; riparian: number; connectivity: number; capacity: number; out: { hqi: number; hu: number } }[]>('skokomish.json')
-  it("equals WARM 1.x on every case (the report's numbering: V1 wood, V2 pools, V3 connectivity, V4 riparian cover)", () => {
+  it("equals the Shiny app on every case (the report's numbering: V1 wood, V2 pools, V3 connectivity, V4 riparian cover)", () => {
     const bad = cases.filter((c) => {
       const r = skokomish(FACTOR[c.factor], { V1: c.wood, V2: c.pools, V3: c.connectivity, V4: c.riparian, V5: c.capacity }, c.acres)
       return !close(r.hqi, c.out.hqi) || !close(r.hu, c.out.hu)
@@ -174,7 +174,7 @@ describe('Skokomish', () => {
 
 describe('SMURF', () => {
   const cases = fixture<{ area: number; instream: number[]; fauna: number[]; corridor: number[]; out: Record<string, number> }[]>('smurf.json')
-  it('equals WARM 1.x (ecorest, rounded to 3 decimals) on every case', () => {
+  it('equals the Shiny app (ecorest, rounded to 3 decimals) on every case', () => {
     const bad = cases.filter((c) => {
       const r = smurfModules(c.instream, c.fauna, c.corridor, c.area)
       return r.instream !== c.out.instream || r.fauna !== c.out.fauna || r.corridor !== c.out.corridor || r.hsi !== c.out.hsi
@@ -224,7 +224,7 @@ describe('Upper Mississippi', () => {
   const cases = fixture<Um[]>('uppermiss.json')
   const run = (c: Um) => upperMississippi({ canopy: c.canopy, forest: c.forest, invasive: c.invasive, regen: c.regen,
     horizontal: c.structure[0], vertical: c.structure[1], sizeClass: c.structure[2], deadWood: c.structure[3], species: c.structure[4] }, c.area)
-  it('equals WARM 1.x wherever no fix applies', () => {
+  it('equals the Shiny app wherever no fix applies', () => {
     const bad = cases.filter((c) => c.canopy < 90 && !(c.forest >= 40 && c.forest < 75)).filter((c) => {
       const r = run(c)
       return !close(r.si.canopy, c.out.canopy) || !close(r.si.forest, c.out.forest) || !close(r.si.invasive, c.out.invasive)
@@ -232,7 +232,7 @@ describe('Upper Mississippi', () => {
     })
     expect(bad).toEqual([])
   })
-  it('desired forest type between 60 and 75 percent: the exact slope (WARM 1.x rounded it to 0.0133)', () => {
+  it('desired forest type between 60 and 75 percent: the exact slope (the Shiny app rounded it to 0.0133)', () => {
     const bad = cases.filter((c) => c.canopy < 90 && c.forest >= 60 && c.forest < 75).filter((c) => !close(run(c).si.forest, c.out.forest, 0.0026))
     expect(bad).toEqual([])
   })
@@ -258,14 +258,14 @@ describe('Lower Willamette', () => {
   const CAT: Record<string, string> = { None: 'none', 'Very few': 'very-few', Sparse: 'sparse', Moderate: 'moderate', Abundant: 'abundant',
     Developed: 'developed', 'Row Crops': 'row-crops', 'Managed Pasture': 'pasture', 'Fallow Grass/herbs': 'fallow', 'Shrubs/trees': 'shrubs-trees', A: 'A', B: 'B', C: 'C' }
   const value = (x: string | number): string | number => (typeof x === 'string' && CAT[x] ? CAT[x] : Number(x))
-  /** Where WARM 2.0 follows the report and WARM 1.x did not. */
+  /** Where WARM follows the report and the Shiny app did not. */
   const changed = (species: string, k: number, x: number): boolean =>
     (species === 'turtle' && k === 1 && x > 0 && x < 25)
     || (species === 'yellowWarbler' && k === 1 && [20, 40, 60, 70, 80].includes(x))
     || (species === 'yellowWarbler' && k === 2 && !(x <= 0 || x === 1 || x >= 2))
     || (species === 'amphibians' && k === 3 && x > 0 && x < 30)
 
-  it('every variable index equals WARM 1.x except where the report differs, and so does the HSI', () => {
+  it('every variable index equals the Shiny app except where the report differs, and so does the HSI', () => {
     const bad: string[] = []
     for (const c of cases) {
       const sp = lwSpecies(ID[c.species])!

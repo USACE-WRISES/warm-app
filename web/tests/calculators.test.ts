@@ -86,7 +86,7 @@ describe('setup choices', () => {
     expect(run('mink', { model: 'forested', 'allen.area': '500' }).fields.map((f) => f.id)).not.toContain('allen.V5')
     expect(run('mink', { model: 'forested', 'allen.area': '50' }).fields.map((f) => f.id)).toContain('allen.V5')
   })
-  it('Lower Willamette accepts WARM 1.x\'s class names', () => {
+  it('Lower Willamette accepts the Shiny app\'s class names', () => {
     const e = run('lower-willamette', { species: 'amphibians', 'amphibians.V6': 'Fallow Grass/herbs' })
     expect(e.parsed['amphibians.V6']).toBe('fallow')
   })

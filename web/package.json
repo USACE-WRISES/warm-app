@@ -1,7 +1,7 @@
 {
   "name": "warm-web",
   "private": true,
-  "version": "2.0.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "WARM, the Web App for Riparian Models: a riparian model finder and nine model calculators, as a static web app on GitHub Pages.",
   "license": "GPL-3.0-only",

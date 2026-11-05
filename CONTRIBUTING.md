@@ -1,7 +1,7 @@
 # Contributing to WARM
 
 WARM is a static web app (TypeScript and Vite, in `web/`) published on GitHub Pages. `docs/methods.md`
-gives every curve and equation with its source; `docs/changes-from-1x.md` every difference from WARM 1.x.
+gives every curve and equation with its source; `docs/changes-from-1x.md` every difference from the Shiny app.
 
 ## Commands
 
@@ -22,8 +22,8 @@ npm --prefix web run freeze      # record the fixtures' hashes (after reference/
 1. **A formula changes only with its source.** Any change to a curve or an equation cites the page of
    the model's document that defines it, adds a line to `docs/changes-from-1x.md` (and
    `docs/methods.md`), and adds a test that pins the source's value.
-2. **WARM 1.x parity is checked, not assumed.** Where WARM keeps WARM 1.x's arithmetic, the tests
-   compare it with WARM 1.x's R code (`reference/legacy.R`) value for value, and skip exactly the inputs
+2. **Parity with the Shiny app is checked, not assumed.** Where WARM keeps the Shiny app's arithmetic, the tests
+   compare it with the Shiny app's R code (`reference/legacy.R`) value for value, and skip exactly the inputs
    a documented correction changes. A new skip needs a documented correction.
 3. **The fixtures are frozen.** `web/tests/fixtures` is written by `reference/make_fixtures.R` only
    (R 4 with jsonlite and ecorest; see `reference/README.md`), and `npm run freeze` records the hashes

@@ -5,10 +5,10 @@ import { type CalcSpec, categoryOf, type FieldGroup, type Raw, renamed } from '.
 
 const SPECIES: Variable = {
   id: 'species', code: 'Species', label: 'Species or guild',
-  categories: LW_SPECIES.map((s) => ({ value: s.id, label: s.name, si: 0, note: s.note })),
+  categories: LW_SPECIES.map((s) => ({ value: s.id, label: s.name, si: 0 })),
 }
 const ACRES: Variable = { id: 'acres', code: 'Acres', label: 'Area', unit: 'acres', min: 0, max: 1e9, optional: true,
-  help: 'Optional: habitat units are the HSI times the acres.' }
+  help: 'Optional. Habitat units = HSI x acres.' }
 
 /** Each species' variables, kept apart by a prefix (turtle.V1, beaver.V1). */
 const SPECIES_VARS: Record<string, Variable[]> = Object.fromEntries(
@@ -19,7 +19,7 @@ export const LOWER_WILLAMETTE: CalcSpec = {
   modelId: 'lower-willamette',
   name: 'Lower Willamette',
   title: 'Lower Willamette River Ecosystem Restoration Project Model',
-  purpose: 'Habitat for key fish and wildlife species in the riverine, riparian and floodplain habitats of the Lower Willamette River, Oregon.',
+  purpose: 'Fish and wildlife habitat along the Lower Willamette River, Oregon.',
   region: 'Northwest',
   returns: 'HSI and habitat units, by species',
   inputStyle: 'Field measurements and classes',
@@ -39,8 +39,8 @@ export const LOWER_WILLAMETTE: CalcSpec = {
     const sp = lwSpecies(id)!
     return [
       setup,
-      { id: 'vars', title: `${sp.name} variables`, note: sp.note, fields: SPECIES_VARS[id] },
-      { id: 'area', title: 'Area', fields: [ACRES] },
+      { id: 'vars', title: 'Habitat variables', note: sp.note, fields: SPECIES_VARS[id] },
+      { id: 'area', title: 'Area', site: true, fields: [ACRES] },
     ]
   },
   compute(v) {

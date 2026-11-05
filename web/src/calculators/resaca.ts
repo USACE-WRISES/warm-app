@@ -6,23 +6,23 @@ import { type CalcSpec, categoryOf, type FieldGroup, parseNumber, type Raw } fro
 
 const HABITAT: Variable = {
   id: 'habitat', code: 'Habitat', label: 'Habitat',
-  categories: RESACA_HABITATS.map((h) => ({ value: h.value, label: h.label, si: 0, note: `${h.value}: ${h.reference} species at the reference sites`,
+  categories: RESACA_HABITATS.map((h) => ({ value: h.value, label: h.label, si: 0, note: h.value,
     aliases: [h.value, { TERF: 'Texas Ebony Resaca Forest', STPW: 'Subtropical Texas Palmetto Woodland', TESES: 'Ebony/Snake-eyes Shrubland' }[h.value]] })),
 }
 const V = (id: string) => RESACA_VARIABLES.find((v) => v.id === id)!
 const REGIME: Variable = { ...V('regime'), categories: V('regime').categories!.map((c, i) => ({ ...c,
   aliases: [['Permanent/Connected'], ['Semipermanent/Disconnected'], ['Dry']][i] })) }
 const SSI_SUM: Variable = { id: 'ssiSum', code: 'Sum of SSI', label: 'Sum of the species suitability indices (SSI)', unit: 'SSI', min: 0, max: 1000,
-  help: 'The SSI of every species present, added up (species off the habitat\'s reference list add 0).' }
+  help: 'The SSIs of the species present, added up. Species off the reference list add 0.' }
 const PRESENT: Variable = { id: 'present', code: 'Species present', label: 'Number of plant species present', unit: 'species', min: 1, max: 1000, integer: true,
-  help: 'Every plant species identified at the site, in or out of the reference list.' }
+  help: 'All plant species found at the site, on the reference list or not.' }
 
 export const RESACA: CalcSpec = {
   id: 'resaca',
   modelId: 'resaca',
   name: 'Resaca',
   title: 'Resaca Reference Condition Model (RRCM)',
-  purpose: 'How close a resaca (a former channel of the Rio Grande) is to reference condition, for three vegetation communities in Cameron County, Texas.',
+  purpose: 'Condition of resacas, former Rio Grande channels, in Cameron County, Texas.',
   region: 'Southwest',
   returns: 'Resaca reference condition index (RRCI)',
   inputStyle: 'Field measurements, classes and a species list',
@@ -40,7 +40,7 @@ export const RESACA: CalcSpec = {
     if (!categoryOf(this, 'habitat', raw)) return [setup]
     return [
       setup,
-      { id: 'bank', title: 'Bank condition', fields: [V('slope'), V('bank')] },
+      { id: 'bankCondition', title: 'Bank condition', fields: [V('slope'), V('bank')] },
       { id: 'vegetation', title: 'Vegetation', fields: [SSI_SUM, PRESENT, V('ripcan'), V('aqcan')] },
       { id: 'invasives', title: 'Invasive species', fields: [V('invasives')] },
       { id: 'water', title: 'Water', fields: [REGIME, V('depth')] },

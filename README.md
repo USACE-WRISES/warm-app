@@ -1,14 +1,13 @@
 # WARM
 
-The Web App for Riparian Models: compare 14 riparian models against a project, then run nine of
-them in calculators that check every input and show how each result is built.
+Web App for Riparian Models: compare riparian models and calculate habitat scores for your sites.
 
 **Open it:** https://usace-wrises.github.io/warm-app/
 
 WARM is documented by Wiest, S. R., C. Shaw, and S. K. McKay. 2026. _A Web Application for Riparian
 Models (WARM)_. ERDC/TN EMRRP-RQ-7. US Army Engineer Research and Development Center.
-https://dx.doi.org/10.21079/11681/50449. Version 2.0 rebuilds the R Shiny app of version 1.x as a
-static web app and corrects several of its calculations against the models' source documents
+https://dx.doi.org/10.21079/11681/50449. This web app replaces the R Shiny app (WARM 1.2.2) and
+corrects several of its calculations against the models' source documents
 (`docs/changes-from-1x.md`).
 
 ## What it does
@@ -41,7 +40,7 @@ WARM runs entirely in the browser: nothing anyone enters is sent anywhere.
 
 ## How results are checked
 
-* **WARM 1.x.** `reference/legacy.R` is WARM 1.x's own R code as plain functions;
+* **The Shiny app.** `reference/legacy.R` is the Shiny app's own R code as plain functions;
   `reference/make_fixtures.R` runs it on thousands of random and edge-case sites and writes the
   fixtures in `web/tests/fixtures`. Every calculator equals it value for value, except exactly where
   a documented correction applies.
@@ -51,7 +50,7 @@ WARM runs entirely in the browser: nothing anyone enters is sent anywhere.
   SMURF report's module tests, the Skokomish report's tables), as acceptance tests.
 * **R's arithmetic.** Interpolation, means and rounding follow R step for step (SMURF equals ecorest to
   the last digit), compared with R on hundreds of values.
-* **Model Comparison** equals WARM 1.x's scores and order on 401 queries, including the note's
+* **Model Comparison** equals the Shiny app's scores and order on 401 queries, including the note's
   Figure 1.
 
 `docs/methods.md` gives every curve and equation with its source.
@@ -73,7 +72,7 @@ npm --prefix web run preview    # the built site at http://localhost:5201/warm-a
 * WARM is a calculator, not an endorsement of any model in it; each model's scientific quality rests
   on its own review and certification.
 * Inputs that are suitability indices (Bosque, Cottonwood, Skokomish) are read from each model's own
-  curves outside WARM, as in WARM 1.x.
+  curves outside WARM, as in the Shiny app.
 * Not included: the source models' average annual habitat units over time, combined indices across
   species, and the Resaca species curves (`docs/changes-from-1x.md`).
 
@@ -83,14 +82,14 @@ npm --prefix web run preview    # the built site at http://localhost:5201/warm-a
 web/            the app (TypeScript, Vite): src/engine the models, src/calculators their forms,
                 src/views the pages; tests/ and their fixtures; page/ the files the site serves as they are
 data            web/data: the model table, SMURF's curves and Resaca's species, as CSV
-reference/      WARM 1.x's calculations in R, which write the test fixtures
+reference/      the Shiny app's calculations in R, which write the test fixtures
 docs/           methods.md, every curve and equation; changes-from-1x.md, every correction
 brand/          the WARM mark
 ```
 
 ## License
 
-GNU General Public License, version 3 (`LICENSE`), as WARM 1.x. The fonts WARM serves keep their own
+GNU General Public License, version 3 (`LICENSE`), as the Shiny app. The fonts WARM serves keep their own
 licenses: see `THIRD_PARTY_NOTICES.md`.
 
 ## Citing

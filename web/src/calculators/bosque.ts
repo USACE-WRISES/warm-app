@@ -35,12 +35,13 @@ export const BOSQUE: CalcSpec = {
   modelId: 'bosque',
   name: 'Bosque Rio Grande',
   title: 'Middle Rio Grande Bosque Riparian Community Index Model',
-  purpose: 'The condition of the bosque (riparian forest, shrubland and meadow) communities of the Middle Rio Grande, New Mexico.',
+  purpose: 'Forest, shrub and meadow communities of the Middle Rio Grande bosque, New Mexico.',
   region: 'Southwest',
   returns: 'Community index (HSI)',
   inputStyle: 'Suitability indices (0 to 1)',
   citations: [SOURCES.bosque],
   method: [
+    'Cover types 1 to 6 are the Hink and Ohmart structure classes I to VI. Types 1 to 5 share one biotic equation; type 6 has its own.',
     'Hydrology = ((FLOODFREQ x DURATION)^1/2 + DEPTHGW + WETTEDAREA) / 3',
     'Biotic integrity, cover types 1 to 5 = {3 x [((CANTREE x NATIVETREE x DISTBIGTR)^1/2 + CANSHRUB) / 2 x SPPCOUNT]^1/2 + CANHERB x INDICATHB + DEPTHOM + (COVGRND x CTGRNDCOV)^1/2} / 6',
     'Biotic integrity, cover type 6 = (CANSHRUB x SPPCOUNT + CANGRASS x INDICATGR + CANFORB x INDICATFB + CANSEDGE x NATIVESDG) / 4',
@@ -49,8 +50,7 @@ export const BOSQUE: CalcSpec = {
   ],
   variables: [COVER, ...ALL],
   groups(raw: Raw): FieldGroup[] {
-    const setup: FieldGroup = { id: 'setup', title: 'Cover type', setup: true, fields: [COVER],
-      note: 'Hink and Ohmart structure classes I to VI. Types 1 to 5 share one biotic equation; type 6 has its own.' }
+    const setup: FieldGroup = { id: 'setup', title: 'Cover type', setup: true, fields: [COVER] }
     const cover = categoryOf(this, 'cover', raw)
     if (!cover) return [setup]
     const marsh = cover === '6'
@@ -71,5 +71,5 @@ export const BOSQUE: CalcSpec = {
     { id: 'biota', label: 'Structure, soils and biotic integrity', index: true },
     { id: 'spatial', label: 'Spatial integrity and disturbance', index: true },
   ],
-  notice: "Enter each variable's suitability index (0 to 1), read from the model's curves for the measured value (model documentation, Appendix E).",
+  notice: "Enter suitability indices (0 to 1) read from the model's curves (Appendix E).",
 }

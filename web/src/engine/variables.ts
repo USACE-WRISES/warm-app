@@ -10,7 +10,7 @@ export interface Category {
   readonly si: number
   /** more words, shown with the choice */
   readonly note?: string
-  /** other names a pasted or imported value may use (WARM 1.x's labels) */
+  /** other names a pasted or imported value may use (the Shiny app's labels) */
   readonly aliases?: readonly string[]
 }
 

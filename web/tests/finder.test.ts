@@ -1,4 +1,4 @@
-// Model Comparison against WARM 1.x: the criteria scores and order on 401 queries (the first is the
+// Model Comparison against the Shiny app: the criteria scores and order on 401 queries (the first is the
 // ERDC technical note's Figure 1), and keyword hits.
 import { describe, expect, it } from 'vitest'
 import { type Criteria, findModels, keywordHits, MODELS, rankByCriteria, score } from '../src/engine/finder'
@@ -7,7 +7,7 @@ import { fixture } from './helpers'
 interface Query { region: string; type: string; instream: string[]; riparian: string[]; order: string[]; value: number[] }
 const data = fixture<{ ids: string[]; criteria: Query[]; keywords: { keyword: string; hits: number[] }[] }>('finder.json')
 
-/** WARM 1.x's criteria as WARM 2.0's: "None" chose nothing (and a group with None in it counted for nothing). */
+/** The Shiny app's criteria as WARM's: "None" chose nothing (and a group with None in it counted for nothing). */
 function criteria(q: Query): Criteria {
   const group = (g: string[]) => (g.includes('None') ? [] : g)
   return { region: q.region === 'None' ? '' : q.region, type: q.type === 'None' ? '' : q.type, instream: group(q.instream), riparian: group(q.riparian) }
@@ -17,7 +17,7 @@ describe('criteria ranking', () => {
   it('reads the 14 models in the table order', () => {
     expect(MODELS.map((m) => m.id)).toEqual(data.ids)
   })
-  it("equals WARM 1.x's scores and order on every query", () => {
+  it("equals the Shiny app's scores and order on every query", () => {
     const bad: string[] = []
     for (const q of data.criteria) {
       const c = criteria(q)

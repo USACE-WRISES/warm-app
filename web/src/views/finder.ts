@@ -1,5 +1,6 @@
-// Find a model: WARM 1.x's Criteria and Keyword tabs on one page. The filters rank the 14 models
-// (WARM 1.x's scores and order); the keyword narrows them to the models that mention it.
+// Find a model: the Shiny app's Criteria and Keyword tabs on one page. The filters rank the 14 models
+// (the Shiny app's scores and order); the keyword narrows them to the models that mention it. Each model is a
+// two-line row; Details opens its description, scope, structure and the processes it measures.
 import { calculatorForModel } from '../calculators'
 import { SOURCES } from '../calculators/sources'
 import { toCsv } from '../engine/csv'
@@ -73,10 +74,10 @@ export function finderPage(): HTMLElement {
       select('Model type', MODEL_TYPES, 'type'),
       checks('Instream processes', INSTREAM_PROCESSES, 'instream'),
       checks('Riparian zone processes', RIPARIAN_PROCESSES, 'riparian'),
-      h('p', { class: 'wa-note', style: { margin: '0' } }, 'Each criterion a model meets earns points; processes the model measures with more than one metric earn more.'))
+      h('p', { class: 'wa-note', style: { margin: '0' } }, 'One point per criterion met; more for processes measured with several metrics.'))
   }
 
-  const search = h('input', { class: 'wa-input', type: 'search', placeholder: 'Search the models, for example Missouri, wetland, urban', 'aria-label': 'Keyword',
+  const search = h('input', { class: 'wa-input', type: 'search', placeholder: 'Search by keyword, for example Missouri, wetland or urban', 'aria-label': 'Keyword',
     value: state.keyword, oninput: () => {
       state.keyword = search.value
       update()
@@ -88,42 +89,45 @@ export function finderPage(): HTMLElement {
       state.view = v
       renderSeg()
       update()
-    } }, v === 'cards' ? 'Cards' : 'Table')))
+    } }, v === 'cards' ? 'List' : 'Table')))
 
-  const card = (r: Ranked, rank: number): HTMLElement => {
+  const row = (r: Ranked, rank: number): HTMLElement => {
     const m = r.model
+    const k = state.keyword.trim().toLowerCase()
     const calc = calculatorForModel(m.id)
-    const desc = h('p', { class: 'wa-model-desc is-clamped' }, ...marked(m.description, state.keyword))
-    const more = h('button', { class: 'wa-link-btn', type: 'button', 'aria-expanded': 'false', onclick: () => {
-      const open = desc.classList.toggle('is-clamped')
-      more.textContent = open ? 'More' : 'Less'
-      more.setAttribute('aria-expanded', String(!open))
-    } }, 'More')
     const matched = new Set(r.score.matched)
-    const fact = (k: string, v: string, hit = false) => h('div', null, h('dt', null, k), h('dd', null, hit ? h('span', { class: 'wa-chip is-match' }, v) : marked(v, state.keyword)))
+    const moreId = `model-${m.id}`
+    // a keyword found only in the details opens them, so its marks show
+    const open = !!k && [m.description, m.scope, m.structure].some((t) => t.toLowerCase().includes(k))
+    const fact = (term: string, value: string) => h('div', null, h('dt', null, term), h('dd', null, ...marked(value, state.keyword)))
+    const more = h('div', { class: 'wa-model-more', id: moreId, hidden: !open },
+      h('p', null, ...marked(m.description, state.keyword)),
+      h('dl', { class: 'wa-model-facts' }, fact('Geographic scope', m.scope), fact('Numerical structure', m.structure)),
+      h('div', { class: 'wa-chips', 'aria-label': 'Processes the model measures' },
+        Object.entries(m.metrics).map(([p, n]) => h('span', { class: `wa-chip${matched.has(p) ? ' is-match' : ''}`, title: plural(n, 'metric') },
+          processLabel(p), ` ${n}`))))
+    const details = h('button', { class: 'wa-link-btn', type: 'button', 'aria-expanded': String(open), 'aria-controls': moreId, onclick: () => {
+      const show = more.hidden
+      more.hidden = !show
+      details.setAttribute('aria-expanded', String(show))
+    } }, icon('chevron'), 'Details')
+    const meta = (value: string, hit: boolean) => (hit ? h('strong', { class: 'is-hit' }, value) : marked(value, state.keyword))
     return h('article', { class: 'wa-model' },
-      h('div', { class: 'wa-model-head' },
+      h('div', { class: 'wa-model-main' },
         h('span', { class: 'wa-model-rank', 'aria-label': `Rank ${rank}` }, String(rank)),
-        h('h3', null, ...marked(m.name, state.keyword)),
-        hasCriteria(state.criteria) ? h('span', { class: `wa-chip ${r.score.value > 0 ? 'is-accent' : 'is-muted'}`, title: 'Criteria score' }, `Score ${r.score.value}`) : null,
-        r.hits ? h('span', { class: 'wa-chip', title: 'Fields that mention the keyword' }, plural(r.hits, 'match', 'matches')) : null),
-      desc,
-      h('dl', { class: 'wa-model-facts' },
-        fact('Region', m.region, matched.has('region')),
-        fact('Model type', m.type.replace(/\//g, ', '), matched.has('type')),
-        fact('Geographic scope', m.scope),
-        fact('Review', m.review),
-        fact('Numerical structure', m.structure)),
-      h('div', { class: 'wa-model-foot' },
-        h('div', { class: 'wa-chips', 'aria-label': 'Processes the model measures' },
-          Object.entries(m.metrics).map(([p, n]) => h('span', { class: `wa-chip${matched.has(p) ? ' is-match' : ''}`, title: `${plural(n, 'metric')}` },
-            processLabel(p), ` ${n}`))),
-        h('div', { class: 'wa-chips' },
-          more,
+        h('div', { class: 'wa-model-text' },
+          h('h3', null, ...marked(m.name, state.keyword)),
+          h('p', { class: 'wa-model-meta' }, meta(m.region, matched.has('region')), ' · ', meta(m.type.replace(/\//g, ', '), matched.has('type')), ' · ',
+            ...marked(m.review, state.keyword))),
+        h('div', { class: 'wa-model-side' },
+          hasCriteria(state.criteria) ? h('span', { class: `wa-chip ${r.score.value > 0 ? 'is-accent' : 'is-muted'}`, title: 'Criteria score' }, `Score ${r.score.value}`) : null,
+          r.hits ? h('span', { class: 'wa-chip', title: 'Fields that mention the keyword' }, plural(r.hits, 'match', 'matches')) : null,
+          details,
           calc
             ? h('a', { class: 'wa-btn wa-btn-primary wa-btn-sm', href: href({ name: 'calc', id: calc.id }) }, 'Open calculator', icon('arrow'))
-            : h('a', { class: 'wa-btn wa-btn-sm', href: SOURCES.review.url, target: '_blank', rel: 'noopener', title: 'This model has no calculator in WARM; it is described in the review of riparian models' },
-              'Read the review', icon('external')))))
+            : h('a', { class: 'wa-btn wa-btn-sm', href: SOURCES.review.url, target: '_blank', rel: 'noopener', title: 'No calculator in WARM. The review of riparian models describes it.' },
+              'Read the review', icon('external')))),
+      more)
   }
 
   const table = (rows: Ranked[]): HTMLElement => {
@@ -148,12 +152,13 @@ export function finderPage(): HTMLElement {
     persist()
     const rows = findModels(state.criteria, state.keyword)
     const k = state.keyword.trim()
-    summary.textContent = `${plural(rows.length, 'model')}${k ? ` mention "${k}"` : ''}${hasCriteria(state.criteria) ? ', ranked by how many of your criteria they meet' : ', in the table\'s order'}.`
+    const found = k ? `${plural(rows.length, 'model')} ${rows.length === 1 ? 'mentions' : 'mention'} "${k}"` : plural(rows.length, 'model')
+    summary.textContent = `${found}${hasCriteria(state.criteria) ? ', ranked by your criteria' : ''}`
     if (!rows.length) {
       results.replaceChildren(h('div', { class: 'wa-card wa-empty' }, h('h2', null, 'No model mentions that keyword'), h('p', null, 'Try a shorter or more general word.')))
       return
     }
-    results.replaceChildren(state.view === 'table' ? table(rows) : h('div', null, rows.map((r, i) => card(r, i + 1))))
+    results.replaceChildren(state.view === 'table' ? table(rows) : h('div', { class: 'wa-models' }, rows.map((r, i) => row(r, i + 1))))
   }
 
   renderFilters()
@@ -161,9 +166,9 @@ export function finderPage(): HTMLElement {
   update()
 
   return h('div', null,
-    h('p', { class: 'wa-crumbs' }, h('a', { href: href({ name: 'home' }) }, 'Home'), ' / Find a model'),
-    h('h1', null, 'Find a model'),
-    h('p', { class: 'wa-lead' }, 'Describe your project to rank the 14 riparian models reviewed by Wiest et al. (2023), or search them by keyword. Nine of them have a calculator in WARM.'),
+    h('div', { class: 'wa-page-head' },
+      h('h1', null, 'Find a model'),
+      h('p', { class: 'wa-sub' }, 'Rank the 14 reviewed models against your project, or search by keyword.')),
     h('div', { class: 'wa-finder' },
       filters,
       h('section', { 'aria-label': 'Models' },

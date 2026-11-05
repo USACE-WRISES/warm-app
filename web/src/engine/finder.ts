@@ -1,5 +1,5 @@
 // Model Comparison: rank the 14 riparian models against a project's criteria, or search them by
-// keyword. The criteria score is WARM 1.x's (app.R 1671-1769), point for point and with its order of
+// keyword. The criteria score is the Shiny app's (app.R 1671-1769), point for point and with its order of
 // ties, which reproduces the ERDC technical note's Figure 1; keyword search counts the fields that
 // contain the keyword (plain text, not case-sensitive) and lists the best matches first.
 import { MODEL_COLUMNS, MODEL_TABLE } from './data'
@@ -64,7 +64,7 @@ export interface Score {
   readonly matched: readonly string[]
 }
 
-/** A model's criteria score (WARM 1.x's points: region, model type, and 1 for each process the
+/** A model's criteria score (the Shiny app's points: region, model type, and 1 for each process the
  * model has metrics for, 1.5 when it has more than one). */
 export function score(m: RiparianModel, c: Criteria): Score {
   let value = 0
@@ -106,7 +106,7 @@ export function score(m: RiparianModel, c: Criteria): Score {
 
 export interface Ranked { readonly model: RiparianModel; readonly score: Score; readonly hits: number }
 
-/** WARM 1.x's order: highest score first; models with the same score in the reverse of the table's
+/** The Shiny app's order: highest score first; models with the same score in the reverse of the table's
  * order (it sorted ascending, stably, and listed from the end). */
 export function rankByCriteria(models: readonly RiparianModel[], c: Criteria): RiparianModel[] {
   const scored = models.map((m, i) => ({ m, i, v: score(m, c).value }))
@@ -127,7 +127,7 @@ export function keywordHits(m: RiparianModel, keyword: string): number {
 }
 
 /** The models for the criteria and keyword: with a keyword, only the models that contain it; with
- * criteria, ranked by score (WARM 1.x's order); with a keyword alone, most matching fields first;
+ * criteria, ranked by score (the Shiny app's order); with a keyword alone, most matching fields first;
  * with neither, the table's order. */
 export function findModels(c: Criteria, keyword: string, models: readonly RiparianModel[] = MODELS): Ranked[] {
   const k = keyword.trim()

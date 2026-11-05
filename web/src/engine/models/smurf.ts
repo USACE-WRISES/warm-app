@@ -3,7 +3,7 @@
 // report) turns each input into a suitability index with ecorest's SIcalc (linear between the
 // curves' breakpoints, flat beyond them), averages each module's indices (instream, fauna, corridor),
 // and takes the geometric mean of the three modules as the HSI; habitat units are HSI times area.
-// WARM rounds the module indices, the HSI, the area and the habitat units to 3 decimals, as WARM 1.x
+// WARM rounds the module indices, the HSI, the area and the habitat units to 3 decimals, as the Shiny app
 // did, with R's rounding.
 import { SMURF_CURVES } from '../data'
 import { approx, type Curve } from '../interp'

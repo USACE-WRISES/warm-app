@@ -15,7 +15,7 @@ export const CHATFIELD: CalcSpec = {
   modelId: 'chatfield',
   name: 'Chatfield',
   title: 'Ecological Functions Approach at Chatfield Reservoir',
-  purpose: 'Functional condition of terrestrial and riparian habitats at Chatfield Reservoir, Colorado.',
+  purpose: 'Terrestrial and riparian habitat at Chatfield Reservoir, Colorado.',
   region: 'Varying',
   returns: 'Functional condition scores (0 to 1)',
   inputStyle: 'State variable scores (50 to 100)',
@@ -28,7 +28,7 @@ export const CHATFIELD: CalcSpec = {
   ],
   variables: SV.flat(),
   groups(): FieldGroup[] {
-    return SV.map((fields, i) => ({ id: `v${i + 1}`, title: `Variable ${i + 1}`, note: CHATFIELD_VARIABLES[i].join(', '), fields }))
+    return SV.map((fields, i) => ({ id: `v${i + 1}`, title: `Variable ${i + 1}`, fields }))
   },
   compute(v) {
     const r = chatfield(SV.flat().map((x) => v[x.id] as number))
@@ -47,5 +47,5 @@ export const CHATFIELD: CalcSpec = {
     raw: Object.fromEntries(SV.flat().map((x, k) => [x.id, String(TN_EXAMPLE[k])])),
     note: 'The ERDC technical note\'s test case (Table 2): overall score 0.34.',
   },
-  notice: 'Score each state variable from 50 to 100, as the model\'s field sheets do.',
+  notice: 'Score each state variable from 50 to 100.',
 }

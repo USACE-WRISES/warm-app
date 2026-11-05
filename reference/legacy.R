@@ -1,7 +1,7 @@
-# WARM 1.x calculations (the R Shiny app, github.com/USACE-WRISES/WARM, app.R at commit 441acb4),
+# The Shiny app's calculations (WARM 1.2.2, github.com/USACE-WRISES/WARM, app.R at commit 441acb4),
 # copied into plain functions so they run outside Shiny. Each function keeps app.R's arithmetic and
-# branching as written, including its known errors: these functions describe what WARM 1.x computed,
-# not what is correct. docs/changes-from-1x.md lists every difference in WARM 2.0, and the tests skip
+# branching as written, including its known errors: these functions describe what the Shiny app computed,
+# not what is correct. docs/changes-from-1x.md lists every difference in WARM, and the tests skip
 # the parity check exactly where a documented fix applies. Line numbers refer to app.R.
 
 # --- Bosque Rio Grande (app.R 555-605) ------------------------------------------------------------
@@ -132,7 +132,7 @@ legacy_resaca <- function(habitat, slope, bank, ssi, rich, ripcan, aqcan, invasi
 }
 
 # --- Skokomish (app.R 964-994) ----------------------------------------------------------------------
-# rows as WARM 1.x labeled them: acres, V1 pools, V2 wood, V3 riparian cover, V4 connectivity, V5 capacity
+# rows as the Shiny app labeled them: acres, V1 pools, V2 wood, V3 riparian cover, V4 connectivity, V5 capacity
 legacy_skokomish <- function(factor, acres, pools, wood, riparian, connectivity, capacity) {
   hqi <- NA; hu <- NA
   if (!is.na(factor) && all(!is.na(c(acres, pools, wood, riparian, connectivity, capacity)))) {
@@ -187,7 +187,7 @@ legacy_uppermiss <- function(canopy, forest, invasive, regen, structure, area) {
   list(canopy = ci, forest = fi, invasive = ii, regen = ri, structure = sum(structure) / 5, hsi = hsi, hu = hu)
 }
 
-# --- Lower Willamette (app.R 1004-1410): the five species WARM 1.x computed ---------------------------
+# --- Lower Willamette (app.R 1004-1410): the five species the Shiny app computed ---------------------------
 lw_num <- function(x) suppressWarnings(as.numeric(x))
 
 legacy_lowerwill <- function(species, v, acres) {
@@ -247,7 +247,7 @@ legacy_lowerwill <- function(species, v, acres) {
 
 # --- Model Comparison (app.R 1661-1809) -------------------------------------------------------------
 # models: the model table (web/data/models.csv); the Criteria tab's score and order, and the Keyword
-# tab's count of matching fields (plain text here, as in WARM 2.0, over the 20 columns WARM 1.x had).
+# tab's count of matching fields (plain text here, as in WARM, over the 20 columns the Shiny app had).
 legacy_rank <- function(models, region, model_type, instream, riparian) {
   rows <- nrow(models)
   value <- rep(0, rows)
@@ -285,7 +285,7 @@ legacy_rank <- function(models, region, model_type, instream, riparian) {
       }
     }
   }
-  # order() is stable; WARM 1.x then listed the models from the last of that order to the first
+  # order() is stable; the Shiny app then listed the models from the last of that order to the first
   ord <- order(value)
   list(order = models[rev(ord), 'ID'], value = value)
 }

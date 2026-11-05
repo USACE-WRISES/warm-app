@@ -7,21 +7,21 @@ import { type CalcSpec, categoryOf, type FieldGroup, parseNumber, type Raw, rena
 const MODEL: Variable = {
   id: 'model', code: 'Model', label: 'Model and cover type',
   categories: [
-    { value: 'modified', label: 'Modified riverine model', note: 'Devendorf and Yager (2013): streams, with stream condition', si: 0 },
-    ...MINK_COVER_TYPES.map((c) => ({ value: c.value, label: `Allen (1986): ${c.label.toLowerCase()}`, note: c.note, si: 0 })),
+    { value: 'modified', label: 'Modified riverine model', note: 'Devendorf and Yager 2013', si: 0 },
+    ...MINK_COVER_TYPES.map((c) => ({ value: c.value, label: `Allen (1986): ${c.label.toLowerCase()}`, si: 0 })),
   ],
 }
 const MOD = MINK_MODIFIED_VARIABLES.map((v) => renamed(v, `mod.${v.id}`))
 const ALLEN = MINK_ALLEN_VARIABLES.map((v) => renamed(v, `allen.${v.id}`, { code: `SI${v.id}` }))
 const AREA: Variable = { id: 'allen.area', code: 'Area', label: 'Wetland area', unit: 'ha', min: 0, max: 1e9,
-  help: `Forested or scrub-shrub wetlands of ${MINK_LARGE_WETLAND_HA} ha or more use the large-wetland cover equation.` }
+  help: `Wetlands of ${MINK_LARGE_WETLAND_HA} ha or more use the large-wetland cover equation.` }
 
 export const MINK: CalcSpec = {
   id: 'mink',
   modelId: 'mink',
   name: 'Modified Mink',
   title: 'Modified Riverine HSI Model for Mink',
-  purpose: 'Year-round mink habitat in riverine and wetland cover types, with a stream condition term for natural and channelized streams.',
+  purpose: 'Mink habitat in riverine and wetland cover types.',
   region: 'Varying',
   returns: 'HSI (the lower of water and cover)',
   inputStyle: 'Field measurements',
@@ -47,7 +47,7 @@ export const MINK: CalcSpec = {
     const pick = (list: string[]) => list.filter((id) => ids.includes(id)).map((id) => ALLEN.find((v) => v.id === `allen.${id}`)!)
     return [
       setup,
-      ...(model === 'forested' ? [{ id: 'wetland', title: 'Wetland', fields: [AREA] }] : []),
+      ...(model === 'forested' ? [{ id: 'wetland', title: 'Wetland', site: true, fields: [AREA] }] : []),
       { id: 'water', title: 'Water', fields: pick(['V1']) },
       { id: 'cover', title: 'Cover', fields: pick(['V2', 'V3', 'V4', 'V5', 'V6']) },
     ]

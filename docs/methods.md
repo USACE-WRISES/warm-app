@@ -1,16 +1,16 @@
 # Methods
 
-How WARM 2.0 computes each result, with its source. Suitability index curves are given as breakpoints (x, SI): the index is linear between breakpoints and holds the end value beyond them, as ecorest's SIcalc and R's approx (rule 2) compute it. A step table gives the index for each range, each range including its upper bound. Pages are as printed in each source.
+How WARM computes each result, with its source. Suitability index curves are given as breakpoints (x, SI): the index is linear between breakpoints and holds the end value beyond them, as ecorest's SIcalc and R's approx (rule 2) compute it. A step table gives the index for each range, each range including its upper bound. Pages are as printed in each source.
 
 ## Model Comparison
 
-The 14 models and their attributes are from Wiest et al. (2023), ERDC/TN EMRRP-ER-26 (`web/data/models.csv`). A model's score for a project's criteria, as in WARM 1.x:
+The 14 models and their attributes are from Wiest et al. (2023), ERDC/TN EMRRP-ER-26 (`web/data/models.csv`). A model's score for a project's criteria, as in the Shiny app:
 
 - **Region.** A model whose region is the project's earns 1; one of several listed regions (West/Midwest/Southeast) earns 1; a model of varying region earns 0.25. Choosing "Varying" gives 1.5 to the varying models and 0.5 to the multi-region ones.
 - **Model type.** 1 if the model's type, or one of its listed types, is the one chosen.
 - **Processes.** For each process checked, 1 if the model measures it, 1.5 if it measures it with more than one metric. Climate and weather counts once in each list it is checked in.
 
-Models are listed by score, highest first; models with equal scores in the reverse of the table's order (WARM 1.x's order, which the ERDC technical note's Figure 1 shows). A keyword keeps the models with a field that contains it (not case-sensitive), ranked by score when criteria are set and otherwise by the number of fields that contain it.
+Models are listed by score, highest first; models with equal scores in the reverse of the table's order (the Shiny app's order, which the ERDC technical note's Figure 1 shows). A keyword keeps the models with a field that contains it (not case-sensitive), ranked by score when criteria are set and otherwise by the number of fields that contain it.
 
 ## Bosque Rio Grande
 
@@ -24,7 +24,7 @@ Burks-Copes and Webb 2012, Table 3. Inputs are suitability indices (0 to 1).
 
 ## Chatfield
 
-ERO Resources Corporation 2009, as WARM 1.x and the model's spreadsheet compute it. The 32 state variables are scored 50 to 100. Each of the 10 variables is (mean + minimum) / 2 of its state variables. Each functional condition score is the weighted sum of the variables divided by 50, minus 1, which maps 50 to 100 onto 0 to 1:
+ERO Resources Corporation 2009, as the Shiny app and the model's spreadsheet compute it. The 32 state variables are scored 50 to 100. Each of the 10 variables is (mean + minimum) / 2 of its state variables. Each functional condition score is the weighted sum of the variables divided by 50, minus 1, which maps 50 to 100 onto 0 to 1:
 
 | Score | V1 | V2 | V3 | V4 | V5 | V6 | V7 | V8 | V9 | V10 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -37,7 +37,7 @@ The overall score is the mean of the four.
 
 ## Cottonwood Missouri
 
-Burks-Copes 2016, as WARM 1.x computes it. Inputs other than stand age are suitability indices.
+Burks-Copes 2016, as the Shiny app computes it. Inputs other than stand age are suitability indices.
 
 - Mature stands (over 25 years): Hydrology = (LCPI + DEPTHGW) / 2; Biota = (RICHNATIVE + CVALUE + WIS) / 3
 - Young stands (2 to 25 years): Hydrology = LCPI; Biota = [(RICHNATIVE + CVALUE + WIS) / 3 + (CANHERB + CANSHRUB) / 2] / 2
@@ -87,7 +87,7 @@ Allen (1986), as encoded in ecorest: SIV1 as above; SIV2 tree canopy and SIV3 sh
 
 ## Resaca
 
-USACE Galveston District 2017, as WARM 1.x computes it.
+USACE Galveston District 2017, as the Shiny app computes it.
 
 - Bank condition = (slope index + bank canopy index) / 2, where the slope index is 0.0667 x X for a slope of 1:X below 1:15 and 1 otherwise, and the bank canopy index is cover / 75, at most 1.
 - Vegetation = (composition + richness + riparian canopy + aquatic canopy) / 4, with riparian canopy = cover / 85 and aquatic canopy = cover / 60, each at most 1. With the reference richness N (24, 18 and 20 for the forest, woodland and shrubland) and S species present: composition = sum of SSI / N and richness = S / N when S is at most N; composition = sum of SSI / S and richness = 1 otherwise.
@@ -97,7 +97,7 @@ USACE Galveston District 2017, as WARM 1.x computes it.
 
 ## SMURF
 
-McKay et al., SMURF Version 1.0, section 4.4. Each input's suitability index comes from its curve (`web/data/smurf_*.csv`, the model's parameter files of 2020-09-10). The instream, fauna and corridor indices are the means of their modules' indices; HSI = (Instream x Fauna x Corridor)^1/3; habitat units = HSI x area. As in WARM 1.x, the three indices, the HSI, the area and the habitat units are rounded to 3 decimals with R's rules.
+McKay et al., SMURF Version 1.0, section 4.4. Each input's suitability index comes from its curve (`web/data/smurf_*.csv`, the model's parameter files of 2020-09-10). The instream, fauna and corridor indices are the means of their modules' indices; HSI = (Instream x Fauna x Corridor)^1/3; habitat units = HSI x area. As in the Shiny app, the three indices, the HSI, the area and the habitat units are rounded to 3 decimals with R's rules.
 
 ## Skokomish
 
@@ -109,4 +109,4 @@ USACE 2021. V1 canopy cover (0, 0) (20, 0.1) (40, 0.4) (70, 1) (80, 1) (90, 0.8)
 
 ## Numerical agreement with R
 
-WARM 2.0 follows R where its results depend on it: interpolation step for step as R's approx (`web/src/engine/interp.ts`), sums and means rounded once as R's extended precision gives them (`stats.ts`), and R's round() (`rround.ts`). The tests compare these with R itself, and every calculator with WARM 1.x's R code, using the fixtures `reference/make_fixtures.R` writes.
+WARM follows R where its results depend on it: interpolation step for step as R's approx (`web/src/engine/interp.ts`), sums and means rounded once as R's extended precision gives them (`stats.ts`), and R's round() (`rround.ts`). The tests compare these with R itself, and every calculator with the Shiny app's R code, using the fixtures `reference/make_fixtures.R` writes.

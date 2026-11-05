@@ -1,4 +1,4 @@
-// Shared test helpers: the golden fixtures (written by reference/make_fixtures.R from WARM 1.x's
+// Shared test helpers: the golden fixtures (written by reference/make_fixtures.R from the Shiny app's
 // R code and the ecorest package) and a tolerance check.
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'

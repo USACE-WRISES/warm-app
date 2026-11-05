@@ -1,5 +1,5 @@
 // Ecological Functions Approach for Terrestrial Habitats at Chatfield Reservoir: ERO Resources
-// Corporation. 2009. ERO Project #4048. As in WARM 1.x (and the model's published spreadsheet, which
+// Corporation. 2009. ERO Project #4048. As in the Shiny app (and the model's published spreadsheet, which
 // the ERDC technical note's test case reproduces): 32 state variable (SV) scores from 50 to 100, in ten
 // variables; each variable scores (mean + minimum) / 2 of its SVs; four functional condition scores
 // weight the variables and map 50..100 onto 0..1; the overall score is their mean.

@@ -45,7 +45,7 @@ describe('calculator pages', () => {
       expect(page.querySelector('.wa-result-value')?.textContent).toBe('n/a')
       clean(page, spec.id)
       if (spec.example) {
-        click(page, 'worked example')
+        click(page, 'Example')
         expect(page.querySelector('.wa-result-value')?.textContent, spec.id).toBe(expected[spec.id])
         clean(page, `${spec.id} with its example`)
       }
@@ -54,7 +54,7 @@ describe('calculator pages', () => {
 
   it('the form updates the result as an input is typed, and flags an invalid one', () => {
     const page = mount(calculatorPage(calculator('skokomish')!))
-    click(page, 'worked example')
+    click(page, 'Example')
     const v1 = page.querySelector<HTMLInputElement>('#f-V1')!
     v1.value = '1.5'
     v1.dispatchEvent(new Event('input'))
@@ -68,21 +68,50 @@ describe('calculator pages', () => {
   it('the setup choice shows its own inputs', () => {
     const page = mount(calculatorPage(calculator('bosque')!))
     expect(page.querySelector('#f-DEPTHGW')).toBeNull()
-    page.querySelector<HTMLInputElement>('input[type=radio][value="6"]')!.click()
+    const cover = page.querySelector<HTMLSelectElement>('select#f-cover')!
+    cover.value = '6'
+    cover.dispatchEvent(new Event('change'))
     expect(page.querySelector('#f-CANSEDGE')).not.toBeNull()
     expect(page.querySelector('#f-DEPTHOM')).toBeNull()
   })
 
+  it('"Next empty input" moves to the first input still to fill', () => {
+    const page = mount(calculatorPage(calculator('upper-mississippi')!))
+    click(page, 'Next empty input')
+    expect(document.activeElement?.id).toBe('f-canopy')
+    const canopy = page.querySelector<HTMLInputElement>('#f-canopy')!
+    canopy.value = '50'
+    canopy.dispatchEvent(new Event('input'))
+    click(page, 'Next empty input')
+    expect(document.activeElement?.id).toBe('f-forest')
+  })
+
+  it('an input\'s (i) opens its help and curve, and Escape closes it; the help stays linked to the input', () => {
+    const page = mount(calculatorPage(calculator('upper-mississippi')!))
+    const info = page.querySelector<HTMLButtonElement>('[data-id="regen"] .wa-info')!
+    const pop = page.querySelector<HTMLElement>('#f-regen-pop')!
+    expect(pop.hidden).toBe(true)
+    info.click()
+    expect(pop.hidden).toBe(false)
+    expect(info.getAttribute('aria-expanded')).toBe('true')
+    expect(pop.textContent).toContain('Stocking above the target scores 1.0.')
+    expect(pop.querySelector('svg')).not.toBeNull()
+    info.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    expect(pop.hidden).toBe(true)
+    const described = page.querySelector('#f-regen')!.getAttribute('aria-describedby')!.split(' ')
+    expect(described.map((id) => page.querySelector(`#${id}`)?.textContent ?? '').join(' ')).toContain('Stocking above the target')
+  })
+
   it('the inputs are kept between visits', () => {
     const first = mount(calculatorPage(calculator('upper-mississippi')!))
-    click(first, 'worked example')
+    click(first, 'Example')
     const again = mount(calculatorPage(calculator('upper-mississippi')!))
     expect(again.querySelector('.wa-result-value')?.textContent).toBe('0.330')
   })
 
   it('many sites: the site moves into the grid, and each row computes', () => {
     const page = mount(calculatorPage(calculator('cottonwood')!))
-    click(page, 'worked example')
+    click(page, 'Example')
     click(page, 'Many sites')
     const rows = page.querySelectorAll('.wa-grid tbody tr')
     expect(rows.length).toBe(1)

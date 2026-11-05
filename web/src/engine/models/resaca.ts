@@ -1,5 +1,5 @@
 // Resaca Reference Condition Model (RRCM): USACE Galveston District. 2017. Resaca Reference Condition
-// Model Documentation, Brownsville Resaca Ecosystem Restoration Study. As WARM 1.x computes it (the
+// Model Documentation, Brownsville Resaca Ecosystem Restoration Study. As the Shiny app computes it (the
 // ERDC technical note's test reproduces the model's published spreadsheet): four categories, bank
 // condition, vegetation, invasives and water, each scored 0 to 1, averaged into the Resaca Reference
 // Condition Index (RRCI). The model approval plan of 2016 differs on two points (docs/changes-from-1x.md).

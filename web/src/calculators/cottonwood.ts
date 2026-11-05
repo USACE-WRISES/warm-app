@@ -4,7 +4,7 @@ import { SOURCES } from './sources'
 import { type CalcSpec, type FieldGroup, parseNumber, type Raw } from './types'
 
 const AGE: Variable = { id: 'age', code: 'Age', label: 'Stand age', unit: 'years', min: 0, max: 1000,
-  help: 'Over 25 years is a mature stand; 2 to 25 years a young stand. Stands under 2 years score 0.' }
+  help: 'Mature: over 25 years. Young: 2 to 25 years. A stand under 2 years scores 0.' }
 
 const LABELS: Record<string, string> = {
   LCPI: 'Land capability potential index', DEPTHGW: 'Depth to groundwater', RICHNATIVE: 'Native species richness',
@@ -22,7 +22,7 @@ export const COTTONWOOD: CalcSpec = {
   modelId: 'cottonwood',
   name: 'Cottonwood Missouri',
   title: 'Community-Based Ecosystem Response Model for the Cottonwood Riparian Forests of the Missouri River',
-  purpose: 'Ecosystem benefits for cottonwood riparian forests along the Missouri River, scored at the community scale.',
+  purpose: 'Cottonwood riparian forests along the Missouri River.',
   region: 'West, Midwest and Southeast',
   returns: 'Ecosystem response index (ERI)',
   inputStyle: 'Suitability indices (0 to 1)',
@@ -64,5 +64,5 @@ export const COTTONWOOD: CalcSpec = {
       ADJLANDUSE: '0.3', PATCHSIZE: '0.9', DISPATCH: '1', PROPCTW: '0.6', RECRUIT: '0.6', INTERSPERS: '0.6' },
     note: 'The ERDC technical note\'s test case (Table 2): ERI 0.59.',
   },
-  notice: "Enter each variable's suitability index (0 to 1), read from the model's curves for the measured value.",
+  notice: "Enter suitability indices (0 to 1) read from the model's curves.",
 }

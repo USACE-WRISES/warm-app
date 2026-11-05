@@ -1,4 +1,4 @@
-// R's round(): WARM 1.x rounded SMURF's indices with it, so WARM 2.0 rounds the same way.
+// R's round(): the Shiny app rounded SMURF's indices with it, so WARM rounds the same way.
 //
 // R 4.0.0 and later round x to d digits by taking the two candidates on either side, x rounded down
 // and x rounded up at d digits, and returning the nearer one in double arithmetic; on an exact tie

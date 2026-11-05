@@ -13,7 +13,7 @@ export const SMURF: CalcSpec = {
   modelId: 'smurf',
   name: 'SMURF',
   title: 'Simple Model for Urban Riparian Function (SMURF)',
-  purpose: 'Riparian function in constrained urban stream corridors (developed for Beargrass Creek, Louisville, Kentucky).',
+  purpose: 'Riparian function in urban stream corridors.',
   region: 'Northeast',
   returns: 'HSI and habitat units',
   inputStyle: 'Field measurements and 0 to 20 scores',
@@ -26,9 +26,9 @@ export const SMURF: CalcSpec = {
   variables: [AREA, ...unique(SMURF_MODULES.flatMap((m) => m.variables))],
   groups(): FieldGroup[] {
     return [
-      { id: 'area', title: 'Area', fields: [AREA] },
+      { id: 'area', title: 'Area', site: true, fields: [AREA] },
       { id: 'instream', title: MODULE('instream').label, fields: MODULE('instream').variables },
-      { id: 'fauna', title: MODULE('fauna').label, note: 'Canopy structure, entered under instream function, is used here too.',
+      { id: 'fauna', title: MODULE('fauna').label, note: 'Also uses the canopy structure entered under instream function.',
         fields: MODULE('fauna').variables.filter((v) => v.id !== 'canstr') },
       { id: 'corridor', title: MODULE('corridor').label, fields: MODULE('corridor').variables },
     ]

@@ -1,7 +1,7 @@
 // Community-Based Ecosystem Response Model for the Cottonwood Riparian Forests of the Missouri River:
 // Burks-Copes, K. A. 2016. ERDC/EL Final Report. Every input but stand age is a suitability index from
 // 0 to 1. Mature stands (over 25 years) and young stands (2 to 25 years) use different hydrology and
-// biotic equations; the ecosystem response index (ERI) weights hydrology three times. As in WARM 1.x,
+// biotic equations; the ecosystem response index (ERI) weights hydrology three times. As in the Shiny app,
 // stands younger than 2 years score 0.
 
 export type CottonwoodStage = 'mature' | 'young' | 'establishing'

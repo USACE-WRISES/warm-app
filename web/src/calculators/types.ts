@@ -13,8 +13,10 @@ export interface FieldGroup {
   readonly title: string
   readonly note?: string
   readonly fields: readonly Variable[]
-  /** the model's setup choice, drawn as option cards */
+  /** the model's setup choice (cover type, species), shown first with the site's name */
   readonly setup?: boolean
+  /** an input of the whole site (its area), shown with the site's name rather than as a group */
+  readonly site?: boolean
 }
 
 export interface OutputSpec {

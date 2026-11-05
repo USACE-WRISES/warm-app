@@ -8,6 +8,7 @@ const PATHS: Record<string, string> = {
   check: 'M3 8.5 6.5 12 13 4.5',
   alert: 'M8 3.2v5.6M8 12.3v.1',
   info: 'M8 7.2v5M8 4.2v.1',
+  about: 'M8 14.5a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM8 7.4v4.1M8 4.9v.1',
   copy: 'M5.5 5.5h7v7h-7zM3.5 10.5v-7h7',
   download: 'M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10',
   upload: 'M8 10.5v-8M4.5 6 8 2.5 11.5 6M3 13.5h10',

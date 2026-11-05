@@ -59,7 +59,7 @@ export function inlineSheet(path: string): string {
 export function head(): string[] {
   return [
     '<meta name="viewport" content="width=device-width, initial-scale=1"/>',
-    '<meta name="description" content="WARM, the Web App for Riparian Models: find a riparian model for a project and run its calculator."/>',
+    '<meta name="description" content="WARM, the Web App for Riparian Models: compare riparian models and calculate habitat scores for your sites."/>',
     '<meta name="theme-color" content="#243a61"/>',
     // search engines leave the site out, as the other WRISES apps do (the owner's decision for CEICA, 2026-10-20)
     '<meta name="robots" content="noindex"/>',

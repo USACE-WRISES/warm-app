@@ -58,18 +58,14 @@ export function renderShell(root: HTMLElement): Shell {
 
   const footer = h('footer', { class: 'wa-footer' },
     h('div', { class: 'wa-footer-in' },
-      h('div', null,
-        h('h2', null, 'How to cite WARM'),
-        h('p', null, TN.citation, ' ', h('a', { href: TN.url, target: '_blank', rel: 'noopener' }, TN.url)),
-        h('p', null, 'WARM runs previously developed riparian models and should be thought of as a calculator, not an endorsement of any model in it. Neither the authors nor the US Army Corps of Engineers accepts responsibility or liability for the use of these models by third parties.')),
-      h('div', null,
-        h('h2', null, `${APP_NAME} ${APP_VERSION_LABEL}`),
-        h('p', null, 'Runs entirely in your browser: nothing you enter is sent anywhere. Licensed under the GNU General Public License, version 3.'),
-        h('div', { class: 'wa-footer-links' },
-          h('a', { href: href({ name: 'guide', section: 'about' }) }, 'About'),
-          h('a', { href: href({ name: 'guide', section: 'changes' }) }, 'Changes from WARM 1.x'),
-          h('a', { href: REPO_URL, target: '_blank', rel: 'noopener' }, 'Source code'),
-          h('a', { href: ORG_URL, target: '_blank', rel: 'noopener' }, 'USACE WRISES')))))
+      h('p', null, 'Cite: ', TN.citation, ' ', h('a', { href: TN.url, target: '_blank', rel: 'noopener' }, TN.url)),
+      h('p', null, 'WARM is a calculator, not an endorsement of any model. Neither the authors nor USACE accepts responsibility or liability for third-party use of these models. Nothing you enter leaves your browser.'),
+      h('div', { class: 'wa-footer-links' },
+        h('a', { href: href({ name: 'guide', section: 'about' }) }, 'About'),
+        h('a', { href: href({ name: 'guide', section: 'changes' }) }, 'Changes from the Shiny app'),
+        h('a', { href: REPO_URL, target: '_blank', rel: 'noopener' }, 'Source code (GPL 3.0)'),
+        h('a', { href: ORG_URL, target: '_blank', rel: 'noopener' }, 'USACE WRISES'),
+        h('span', null, `${APP_NAME} ${APP_VERSION_LABEL}`))))
 
   root.replaceChildren(h('a', { class: 'wa-skip', href: '#main', onclick: (e: Event) => {
     e.preventDefault()

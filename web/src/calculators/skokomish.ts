@@ -5,18 +5,18 @@ import { type CalcSpec, categoryOf, type FieldGroup, type Raw } from './types'
 
 const FACTOR: Variable = {
   id: 'factor', code: 'Limiting factor', label: 'Limiting factor of the assessment area',
-  categories: SKOKOMISH_FACTORS.map((f) => ({ value: f.value, label: f.label, note: f.note, si: 0,
+  categories: SKOKOMISH_FACTORS.map((f) => ({ value: f.value, label: f.label, si: 0,
     aliases: [{ inChannel: 'In-Channel Habitat', floodplain: 'Floodplain Habitat', capacityInChannel: 'Channel Capacity and In-Channel Habitat' }[f.value]] })),
 }
 const ACRES: Variable = { id: 'acres', code: 'Acres', label: 'Affected area', unit: 'acres', min: 0, max: 1e9, optional: true,
-  help: 'Optional: habitat units are the HQI times the affected acres.' }
+  help: 'Optional. Habitat units = HQI x affected acres.' }
 
 export const SKOKOMISH: CalcSpec = {
   id: 'skokomish',
   modelId: 'skokomish',
   name: 'Skokomish',
   title: 'Skokomish River Ecosystem Restoration Project Environmental Benefits Analysis',
-  purpose: 'Habitat quality for restoration planning in the Skokomish River valley, Washington, scored on the factors limiting each assessment area.',
+  purpose: 'Habitat quality in the Skokomish River valley, Washington.',
   region: 'Northwest',
   returns: 'HQI and habitat units',
   inputStyle: 'Suitability indices (0 to 1)',
@@ -34,7 +34,7 @@ export const SKOKOMISH: CalcSpec = {
     return [
       setup,
       { id: 'vars', title: 'Habitat variables', fields: SKOKOMISH_VARIABLES.filter((v) => ids.includes(v.id)) },
-      { id: 'area', title: 'Area', fields: [ACRES] },
+      { id: 'area', title: 'Area', site: true, fields: [ACRES] },
     ]
   },
   compute(v) {
@@ -49,5 +49,5 @@ export const SKOKOMISH: CalcSpec = {
     raw: { factor: 'capacityInChannel', V1: '0.72', V2: '0.83', V5: '0.97', acres: '219' },
     note: 'The ERDC technical note\'s test case (Table 2 and Figure 3): HQI 0.84 and 183.96 habitat units.',
   },
-  notice: "Enter each variable's suitability index (0 to 1); each variable's help says what the report measures.",
+  notice: 'Enter suitability indices (0 to 1). The (i) button says what the report measures.',
 }

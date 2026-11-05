@@ -69,16 +69,16 @@ export function speciesTable(initial: Raw, initialHabitat: ResacaHabitat | undef
       h('span', { class: 'wa-chip is-accent' }, plural(t.present, 'species', 'species'), ' present'),
       h('span', { class: 'wa-chip' }, 'Sum of SSI: ', t.ssiSum === null ? 'n/a' : fmt(t.ssiSum, 2)),
       n ? h('span', { class: 'wa-chip' }, `Reference richness: ${n}`) : null,
-      t.needSsi.length ? h('span', { class: 'wa-chip', style: { borderColor: 'var(--wa-warn-border)', background: 'var(--wa-warn-soft)', color: '#6d4a00' } },
-        `SSI needed for ${t.needSsi.map((i) => RESACA_SPECIES[i].common).slice(0, 3).join(', ')}${t.needSsi.length > 3 ? ' and more' : ''}`) : null,
-      t.invalid.length ? h('span', { class: 'wa-chip', style: { borderColor: 'var(--wa-err-border)', background: 'var(--wa-err-soft)', color: 'var(--wa-err)' } },
-        `Check ${t.invalid.map((i) => RESACA_SPECIES[i].common).slice(0, 3).join(', ')}: composition is 0 to 100, SSI 0 to 1`) : null,
+      t.needSsi.length ? h('span', { class: 'wa-chip is-warn' },
+        `SSI needed: ${t.needSsi.map((i) => RESACA_SPECIES[i].common).slice(0, 3).join(', ')}${t.needSsi.length > 3 ? ` and ${t.needSsi.length - 3} more` : ''}`) : null,
+      t.invalid.length ? h('span', { class: 'wa-chip is-err' },
+        `Check ${t.invalid.map((i) => RESACA_SPECIES[i].common).slice(0, 3).join(', ')}: composition 0 to 100, SSI 0 to 1`) : null,
     ].filter((x): x is HTMLSpanElement => x !== null))
   }
 
-  const el = h('section', { class: 'wa-group', 'aria-labelledby': 'species-h' },
+  const el = h('section', { class: 'wa-group wa-species', 'aria-labelledby': 'species-h' },
     h('div', { class: 'wa-group-head' }, h('h2', { id: 'species-h' }, 'Species composition')),
-    h('p', { class: 'wa-group-note' }, 'Enter the percent composition of each plant species at the site. Every species present counts toward richness; for the species on the habitat\'s reference list, also enter its species suitability index (SSI, 1.0 within the reference range). The totals fill the vegetation inputs above.'),
+    h('p', { class: 'wa-group-note' }, 'Enter each species\' percent composition. Reference species also need an SSI (1.0 within the reference range).'),
     h('div', { class: 'wa-species-tools' }, h('div', { class: 'wa-search' }, icon('search'), search), allToggle),
     sum,
     h('div', { class: 'wa-table-wrap is-tall' }, h('table', { class: 'wa-table' },

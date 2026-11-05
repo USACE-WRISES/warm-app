@@ -4,14 +4,14 @@ import { SOURCES } from './sources'
 import type { CalcSpec, FieldGroup } from './types'
 
 const AREA: Variable = { id: 'area', code: 'Area', label: 'Management area', unit: 'acres', min: 0, max: 1e9, optional: true,
-  help: 'Optional: habitat units are the HSI times the acres.' }
+  help: 'Optional. Habitat units = HSI x acres.' }
 
 export const UPPER_MISSISSIPPI: CalcSpec = {
   id: 'upper-mississippi',
   modelId: 'upper-mississippi',
   name: 'Upper Mississippi',
   title: 'Upper Mississippi River System (UMRS) Floodplain Forest Habitat Model',
-  purpose: 'Habitat changes from common management actions in floodplain (bottomland) forests, assessed by management area.',
+  purpose: 'Floodplain forest habitat on the Upper Mississippi River.',
   region: 'Southeast',
   returns: 'HSI and habitat units',
   inputStyle: 'Field measurements and indicator scores',
@@ -25,8 +25,8 @@ export const UPPER_MISSISSIPPI: CalcSpec = {
   groups(): FieldGroup[] {
     return [
       { id: 'measured', title: 'Forest measurements', fields: UMRS_VARIABLES },
-      { id: 'structure', title: 'Structural diversity (V5)', note: 'Score each indicator from 0 to 1 in steps of 0.2.', fields: UMRS_STRUCTURE },
-      { id: 'area', title: 'Area', fields: [AREA] },
+      { id: 'structure', title: 'Structural diversity (V5)', note: 'Score each indicator 0 to 1 in steps of 0.2.', fields: UMRS_STRUCTURE },
+      { id: 'area', title: 'Area', site: true, fields: [AREA] },
     ]
   },
   compute(v) {
